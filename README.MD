@@ -24,8 +24,8 @@
 https://tickhaijun.github.io/GitHub-Collaboration-Guide/
 
 ## 🍦 文章
-<a href="https://github.com/TickHaiJun/GitHub-Collaboration-Guide/blob/main/GitHub%E5%A6%82%E4%BD%95%E7%8E%A9.md" >Github 小白入手指南</a>
-<a href="https://github.com/TickHaiJun/GitHub-Collaboration-Guide/blob/main/Commands.md" >Git 使用指南</a>
+- <a href="https://github.com/TickHaiJun/GitHub-Collaboration-Guide/blob/main/GitHub%E5%A6%82%E4%BD%95%E7%8E%A9.md" >Github 小白入手指南</a>
+- <a href="https://github.com/TickHaiJun/GitHub-Collaboration-Guide/blob/main/Commands.md" >Git 使用指南</a>
 
 
 ## 🌟 GitHub 新手指南
