@@ -33,7 +33,7 @@ https://tickhaijun.github.io/GitHub-Collaboration-Guide/
 1.  点击右上角 ➕ 选择 "New repository"
 2.  输入仓库名 (建议小写+连字符)
 3.  勾选初始化 README
-4.  选择开源协议 (推荐 MIT)
+4.  选择开源协议 
 
 ## 🌟 GitHub 新手指南
 
