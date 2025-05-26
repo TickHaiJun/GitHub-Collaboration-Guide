@@ -2,9 +2,7 @@
 
 > 一站式 Git 与 GitHub 实战指南 | 从入门到精通
 
-![Git Logo](https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/07e0f53fcb6e49f3998c760e5a2115d4~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg56iL5bqP5ZGY5rW35Yab:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTIzOTkwNDg0ODcxMzU5MiJ9\&rk3s=e9ecf3d6\&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018\&x-orig-expires=1748316684\&x-orig-sign=vHhlyeE9oW38ZItwHsVgGwvzuq8%3D)\
-[![License: MIT](https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/d65d3ab9cf404cbabc48597616be6edd~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg56iL5bqP5ZGY5rW35Yab:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTIzOTkwNDg0ODcxMzU5MiJ9\&rk3s=e9ecf3d6\&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018\&x-orig-expires=1748316684\&x-orig-sign=Cg7OtfmpW9hgL6aTmz3rDjxyUCw%3D)](https://opensource.org/licenses/MIT)
-[![WeChat Contact](https://p0-xtjj-private.juejin.cn/tos-cn-i-73owjymdk6/135337d876304c0f957dfc771cf531f4~tplv-73owjymdk6-jj-mark-v1:0:0:0:0:5o6Y6YeR5oqA5pyv56S-5Yy6IEAg56iL5bqP5ZGY5rW35Yab:q75.awebp?policy=eyJ2bSI6MywidWlkIjoiMTIzOTkwNDg0ODcxMzU5MiJ9\&rk3s=e9ecf3d6\&x-orig-authkey=f32326d3454f2ac7e96d3d06cdbb035152127018\&x-orig-expires=1748316684\&x-orig-sign=c3xHmqwaejKBIF7NPH5xzNdY44g%3D)](https://img.icons8.com/color/48/000000/weixing.png)
+<img src="https://github.com/TickHaiJun/GitHub-Collaboration-Guide/blob/main/img/1.png">
 
 ## 📖 目录
 
