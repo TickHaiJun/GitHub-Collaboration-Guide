@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git Command Reference | 程序员必备开发工具参考手册</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        git: {
+                            light: '#f14e32',
+                            dark: '#f05033',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .code-block {
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+
+        .code-block::before {
+            content: '$';
+            position: absolute;
+            left: 10px;
+            color: #6b7280;
+        }
+
+        .code-block code {
+            display: block;
+            padding-left: 20px;
+        }
+
+        .command-comment {
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        .dark .command-comment {
+            color: #9ca3af;
+        }
+
+        .nav-link {
+            transition: all 0.2s ease;
+        }
+
+        .nav-link.active {
+            background-color: rgba(240, 82, 51, 0.1);
+            color: #f05233;
+            font-weight: 500;
+        }
+
+        .dark .nav-link.active {
+            background-color: rgba(240, 82, 51, 0.2);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-200">
+    <header class="bg-white dark:bg-gray-800 shadow-sm">
+        <div class="container mx-auto px-4 py-6 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                    class="w-8 h-8 text-git-dark dark:text-git-light">
+                    <path fill-rule="evenodd"
+                        d="M12 6a3.75 3.75 0 100 7.5A3.75 3.75 0 0012 6zm0 2.25a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM12 15a3.75 3.75 0 100 7.5A3.75 3.75 0 0012 15zm0 2.25a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM2.25 12a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zm3.75-1.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm13.5 0a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0zm3.75-1.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3z"
+                        clip-rule="evenodd" />
+                </svg>
+                <h1 class="text-2xl font-bold text-git-dark dark:text-git-light">Git Command Reference</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773l-1.591-1.591M12 8.25c.995 0 1.943-.16 2.825-.477a6.257 6.257 0 004.576-4.576 9.025 9.025 0 01-2.825-.483c-.995 0-1.943.16-2.825.477a6.257 6.257 0 00-4.576 4.576A9.025 9.025 0 0112 8.25z" />
+                    </svg>
+                    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <!-- Sidebar Navigation -->
+            <aside class="lg:col-span-1">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 sticky top-8">
+                    <h2 class="text-xl font-semibold mb-4 text-git-dark dark:text-git-light">目录</h2>
+                    <nav>
+                        <ul class="space-y-2">
+                            <li><a href="#global-settings"
+                                    class="nav-link block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">全局设置</a>
+                            </li>
+                            <li><a href="#common-commands"
+                                    class="nav-link block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">常用命令</a>
+                            </li>
+                            <li><a href="#branch-management"
+                                    class="nav-link block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">分支管理</a>
+                            </li>
+                            <li><a href="#remote-operations"
+                                    class="nav-link block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">远程仓库操作</a>
+                            </li>
+                            <li><a href="#undo-changes"
+                                    class="nav-link block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">撤销与回退</a>
+                            </li>
+                            <li><a href="#logs-diffs"
+                                    class="nav-link block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">日志与对比</a>
+                            </li>
+                            <li><a href="#workflow"
+                                    class="nav-link block px-3 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-700">完整工作流程</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="lg:col-span-3 space-y-12">
+                <!-- Global Settings Section -->
+                <section id="global-settings" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-git-light dark:bg-git-dark px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white">全局设置</h2>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">配置用户信息</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global user.name "Your Name"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 设置全局用户名，用于标识提交作者</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global user.email "your.email@example.com"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 设置全局邮箱地址，与用户名一起标识提交作者</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --list</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看所有Git配置信息</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global init.defaultBranch main</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 设置默认分支名为main（替代传统的master）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global core.editor "code --wait"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 设置VS Code为默认编辑器（--wait参数会等待编辑器关闭）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global color.ui auto</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 启用Git输出的颜色显示，提高可读性</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">配置别名</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global alias.st status</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建status命令的简短别名st</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global alias.co checkout</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建checkout命令的简短别名co</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global alias.br branch</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建branch命令的简短别名br</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global alias.ci commit</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建commit命令的简短别名ci</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config --global alias.unstage 'reset HEAD --'</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建取消暂存文件的别名unstage</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Common Commands Section -->
+                <section id="common-commands" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-git-light dark:bg-git-dark px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white">常用命令</h2>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">仓库初始化</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git init</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 在当前目录初始化一个新的Git仓库</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git clone &lt;repository-url&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 克隆远程仓库到本地（默认克隆所有分支）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git clone -b &lt;branch-name&gt; &lt;repository-url&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 克隆远程仓库的指定分支到本地</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">文件操作</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git status</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看工作区和暂存区的状态（最常用命令）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git add .</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 添加所有文件到暂存区（包括新文件和修改的文件）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git add &lt;filename&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 添加指定文件到暂存区</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git add -u</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 添加所有已跟踪文件的修改到暂存区（不包括新文件）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git add -i</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 进入交互式添加模式，可以选择性地暂存文件的部分更改</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">提交操作</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git commit -m "commit message"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 提交暂存区的更改到本地仓库，并添加提交信息</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git commit -am "commit message"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 添加所有已跟踪文件的修改并提交（相当于git add -u + git commit）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git commit --amend -m "new commit message"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 修改最近一次提交的信息（不会创建新的提交）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git commit --allow-empty -m "empty commit"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建一个空提交（常用于触发CI/CD流程）</p>
+                        </div>
+                    </div>
+                </section>
+                <!-- Global Settings Section -->
+                <section id="global-settings" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <!-- ... previous global settings content ... -->
+                </section>
+
+                <!-- Common Commands Section -->
+                <section id="common-commands" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <!-- ... previous common commands content ... -->
+                </section>
+
+                <!-- Branch Management Section -->
+                <section id="branch-management" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-git-light dark:bg-git-dark px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white">分支管理</h2>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">查看分支</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看本地分支列表（当前分支前有*标记）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch -r</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看远程分支列表</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch -a</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看所有分支（包括本地和远程）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch -v</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看分支详细信息（包括最新提交）</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">创建分支</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 基于当前分支创建新分支（不切换）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch &lt;branch-name&gt; &lt;commit-hash&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 基于特定提交创建新分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout -b &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建并立即切换到新分支（传统方式）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git switch -c &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建并切换到新分支（Git 2.23+推荐方式）</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">切换分支</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 切换到指定分支（传统方式）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git switch &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 切换到指定分支（Git 2.23+推荐方式）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout -</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 切换到上一个分支（类似cd -）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout main</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 切换到主分支（假设主分支名为main）</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">合并分支</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git merge &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 将指定分支合并到当前分支（默认使用快进合并）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git merge --ff-only &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 仅允许快进合并（如果不能快进则失败）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git merge --no-ff &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 强制创建合并提交（即使可以快进）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git merge --squash &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 将分支的所有提交压缩为一个提交再合并</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">删除分支</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch -d &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 安全删除已合并的分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch -D &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 强制删除分支（即使未合并）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin --delete &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 删除远程分支</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Remote Operations Section -->
+                <section id="remote-operations" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-git-light dark:bg-git-dark px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white">远程仓库操作</h2>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">远程仓库管理</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git remote -v</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看所有远程仓库及其URL</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git remote add origin &lt;repository-url&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 添加远程仓库并命名为origin</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git remote set-url origin &lt;new-repository-url&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 修改远程仓库URL</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git remote rename origin upstream</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 将远程仓库origin重命名为upstream</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git remote remove origin</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 删除名为origin的远程仓库</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">推送操作</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 将本地分支推送到远程仓库</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push -u origin main</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 首次推送主分支并设置上游跟踪</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push --all origin</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 推送所有本地分支到远程仓库</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push --tags origin</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 推送所有标签到远程仓库</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push --force origin &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 强制推送（会覆盖远程历史，谨慎使用）</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">拉取操作</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git pull</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 拉取并合并当前分支的远程更改</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git pull origin &lt;branch-name&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 拉取指定远程分支并合并到当前分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git fetch</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 获取远程仓库最新状态但不合并</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git fetch --all</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 获取所有远程仓库的最新状态</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git pull --rebase</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 拉取远程更改并使用变基而非合并</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Undo Changes Section -->
+                <section id="undo-changes" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-git-light dark:bg-git-dark px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white">撤销与回退</h2>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">撤销暂存区</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git reset HEAD &lt;filename&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 将文件从暂存区移回工作区（不丢失修改）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git reset HEAD</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 将所有文件从暂存区移回工作区</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git restore --staged &lt;filename&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 新版本Git中撤销暂存的方式</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">撤销工作区</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout -- &lt;filename&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 丢弃工作区中对文件的修改（不可恢复）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout -- .</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 丢弃工作区中所有修改（谨慎使用）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git restore &lt;filename&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 新版本Git中撤销工作区修改的方式</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">回退提交</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git reset --soft HEAD~1</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 撤销最近提交，修改保留在暂存区</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git reset --mixed HEAD~1</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 撤销最近提交，修改保留在工作区（默认行为）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git reset --hard HEAD~1</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 彻底撤销最近提交，丢弃所有修改（谨慎使用）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git reset --hard &lt;commit-hash&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 回退到指定提交，丢弃之后的所有修改</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">创建反向提交</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git revert &lt;commit-hash&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建新提交来撤销指定提交的更改</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git revert -m 1 &lt;merge-commit-hash&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 撤销合并提交（-m 1表示保留主分支线）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git revert &lt;commit-hash1&gt;..&lt;commit-hash2&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 撤销一个范围内的多个提交</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">暂存修改</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git stash</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 暂存当前工作目录和暂存区的修改</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git stash -u</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 暂存包括未跟踪文件在内的所有修改</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git stash save "work in progress"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 暂存修改并添加描述信息</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git stash list</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看所有暂存的修改列表</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git stash pop</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 恢复最近一次暂存的修改并从列表中删除</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git stash apply stash@{0}</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 恢复指定的暂存修改（不删除）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git stash drop stash@{0}</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 删除指定的暂存修改</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git stash clear</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 清空所有暂存的修改</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Logs & Diffs Section -->
+                <section id="logs-diffs" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-git-light dark:bg-git-dark px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white">日志与对比</h2>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">查看提交历史</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git log</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看当前分支的提交历史</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git log --oneline</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 简洁模式查看提交历史（只显示提交哈希和消息）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git log --graph --oneline</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 图形化显示分支合并历史</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git log --graph --all --oneline</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 图形化显示所有分支的提交历史</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git log -- &lt;filename&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看指定文件的提交历史</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git log --author="Author Name"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看指定作者的提交</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git log --since="2024-01-01" --until="2024-12-31"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看指定时间范围内的提交</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">查看提交详情</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git show &lt;commit-hash&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看指定提交的详细信息和更改内容</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git show HEAD</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看最近一次提交的详细信息</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git show --stat &lt;commit-hash&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 只查看提交的统计信息，不显示具体差异</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">对比差异</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git diff</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看工作区与暂存区的差异</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git diff --cached</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看暂存区与上次提交的差异</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git diff HEAD</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看工作区与上次提交的差异</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git diff &lt;commit-hash1&gt; &lt;commit-hash2&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 对比两个提交之间的差异</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git diff &lt;branch1&gt; &lt;branch2&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 对比两个分支之间的差异</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git diff &lt;filename&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看指定文件的差异</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git diff --word-diff</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 以单词为单位显示差异（而非行）</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">查找和定位</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git log --grep="keyword"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查找提交信息中包含关键字的提交</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git grep "search-term"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 在代码中搜索指定内容</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git blame &lt;filename&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看文件的每一行是谁修改的</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git bisect start</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git bisect bad &lt;bad-commit&gt;</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git bisect good &lt;good-commit&gt;</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 使用二分查找定位引入问题的提交</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Workflow Section -->
+                <section id="workflow" class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
+                    <div class="bg-git-light dark:bg-git-dark px-6 py-4">
+                        <h2 class="text-xl font-semibold text-white">完整工作流程</h2>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">1. 项目初始化</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>mkdir my-project</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>cd my-project</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建项目目录并进入</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git init</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 初始化Git仓库</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config user.name "Your Name"</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git config user.email "your.email@example.com"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 配置用户信息（如果未全局配置）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>echo "node_modules/" > .gitignore</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>echo "*.log" >> .gitignore</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>echo ".env" >> .gitignore</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建.gitignore文件排除不需要版本控制的文件</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">2. 首次提交</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>echo "# My Project" > README.md</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>echo "console.log('Hello World');" > index.js</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建初始项目文件</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git add .</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 添加所有文件到暂存区</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git commit -m "Initial commit: Add README and basic setup"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 进行首次提交</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git status</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 检查仓库状态</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">3. 连接远程仓库</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git remote add origin https://github.com/username/my-project.git</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 添加远程仓库（先在GitHub/GitLab等平台创建）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push -u origin main</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 推送代码到远程仓库并设置上游跟踪</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git remote -v</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 验证远程连接</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">4. 功能开发流程</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout -b feature/user-authentication</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 基于当前分支创建功能分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="command-comment text-sm pl-4"># 开发功能...编辑文件，添加新功能</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git status</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 查看修改状态</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git add src/auth.js src/login.js</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 添加特定文件到暂存区</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git commit -m "Add user authentication system\n\n- Implement login functionality\n- Add password validation\n- Create user session management"</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 提交修改（多行提交信息）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin feature/user-authentication</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 推送功能分支到远程</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">5. 更新和同步</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout main</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 切换回主分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git pull origin main</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 拉取主分支最新代码</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout feature/user-authentication</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 切换回功能分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git rebase main</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 将主分支的最新修改变基到功能分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="command-comment text-sm pl-4"># 如果有冲突，解决冲突后继续</p>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2 mt-2">
+                                <code>git add &lt;conflicted-files&gt;</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git rebase --continue</code>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push --force-with-lease origin feature/user-authentication</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 安全强制推送更新后的功能分支</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">6. 代码审查和合并准备</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git rebase -i HEAD~3</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 交互式变基，压缩或修改最近3个提交</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="command-comment text-sm pl-4"># 在交互界面中选择squash或fixup来合并提交</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push --force-with-lease origin feature/user-authentication</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 推送整理后的提交历史</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="command-comment text-sm pl-4"># 在GitHub/GitLab等平台创建Pull Request/Merge Request</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">7. 合并与冲突处理</h3>
+
+                        <div class="mb-6">
+                            <p class="command-comment text-sm pl-4"># 方式一：通过命令行合并</p>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2 mt-2">
+                                <code>git checkout main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git pull origin main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git merge feature/user-authentication</code>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="command-comment text-sm pl-4"># 如果有合并冲突</p>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2 mt-2">
+                                <code>git status</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 1. 查看冲突文件</p>
+                            <p class="command-comment text-sm pl-4"># 2. 手动编辑冲突文件，解决冲突标记</p>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2 mt-2">
+                                <code>git add &lt;resolved-files&gt;</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git commit -m "Resolve merge conflicts in user authentication"</code>
+                            </div>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="command-comment text-sm pl-4"># 方式二：使用变基合并（保持线性历史）</p>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2 mt-2">
+                                <code>git checkout main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git pull origin main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout feature/user-authentication</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git rebase main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git merge feature/user-authentication</code>
+                            </div>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">8. 推送与清理</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin main</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 推送合并后的主分支到远程</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch -d feature/user-authentication</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 删除本地功能分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin --delete feature/user-authentication</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 删除远程功能分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git remote prune origin</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 清理本地已不存在的远程分支引用</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git tag -a v1.0.0 -m "Release version 1.0.0"</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin v1.0.0</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建并推送版本标签（可选）</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">9. 持续开发循环</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git pull origin main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout -b feature/payment-system</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 开始新功能开发，重复步骤4-8</p>
+                        </div>
+
+                        <h3 class="text-lg font-medium mb-4 text-git-dark dark:text-git-light">10. 紧急修复流程</h3>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git pull origin main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout -b hotfix/security-patch</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 基于main分支创建热修复分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="command-comment text-sm pl-4"># 进行紧急修复...编辑代码</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git add .</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git commit -m "Security patch: Fix authentication vulnerability"</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin hotfix/security-patch</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 快速提交和推送热修复</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout main</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git merge hotfix/security-patch</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin main</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 快速合并到main（跳过正常审查流程）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git checkout develop</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git merge hotfix/security-patch</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin develop</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 同时合并到开发分支（如果存在）</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git branch -d hotfix/security-patch</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin --delete hotfix/security-patch</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 清理热修复分支</p>
+                        </div>
+
+                        <div class="mb-6">
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git tag -a v1.0.1 -m "Emergency security patch"</code>
+                            </div>
+                            <div class="code-block bg-gray-100 dark:bg-gray-700 p-4 rounded-lg mb-2">
+                                <code>git push origin v1.0.1</code>
+                            </div>
+                            <p class="command-comment text-sm pl-4"># 创建紧急版本标签</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-12">
+        <div class="container mx-auto px-4 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <p class="text-gray-600 dark:text-gray-300">© 2025 程序员海军. All rights reserved.</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="https://img-hello-world.oss-cn-beijing.aliyuncs.com/imgs/c95cfc940e64c8f034898e884d64ec28.jpg" class="text-git-dark dark:text-git-light hover:underline">WeChat: daxin261</a>
+                    <a href="https://github.com/TickHaiJun/GitHub-Collaboration-Guide" class="text-git-dark dark:text-git-light hover:underline">Star GitHub</a>
+                    
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Dark/Light mode toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+
+        // Check for saved user preference or use system preference
+        if (localStorage.getItem('color-theme') === 'dark' ||
+            (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            // Toggle icons
+            sunIcon.classList.toggle('hidden');
+            moonIcon.classList.toggle('hidden');
+
+            // Toggle theme
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // Smooth scrolling and active navigation highlighting
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                // Remove active class from all nav links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Add active class to clicked nav link
+                this.classList.add('active');
+
+                // Scroll to section
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Highlight active section based on scroll position
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+
+                if (pageYOffset >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
